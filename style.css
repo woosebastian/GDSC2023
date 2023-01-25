@@ -1,0 +1,31 @@
+:root{
+    --dark-gray-color: #363636;
+    --light-gray-color: #D9D9D9;
+}
+/* 
+width: 360px  -> 1 vw = 3.6px
+height: 800px -> 1 vh = 8.0px */ 
+
+body{
+    background-color: antiquewhite;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+}
+.interactive-map-main{
+    height: 800px; 
+    width: 360px;
+    background-color: white;
+}
+
+.database-info-main{
+    height: 800px; 
+    width: 360px;
+    background-color: white;
+}
+
+.articles-blogs-main{
+    height: 800px; 
+    width: 360px;
+    background-color: white;
+}
