@@ -32,8 +32,8 @@
       "languageVersion": "2.12"
     },
     {
-      "name": "english_words",
-      "rootUri": "file:///Users/sw/.pub-cache/hosted/pub.dev/english_words-4.0.0",
+      "name": "cupertino_icons",
+      "rootUri": "file:///Users/sw/.pub-cache/hosted/pub.dev/cupertino_icons-1.0.5",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -92,20 +92,8 @@
       "languageVersion": "2.12"
     },
     {
-      "name": "nested",
-      "rootUri": "file:///Users/sw/.pub-cache/hosted/pub.dev/nested-1.0.0",
-      "packageUri": "lib/",
-      "languageVersion": "2.12"
-    },
-    {
       "name": "path",
       "rootUri": "file:///Users/sw/.pub-cache/hosted/pub.dev/path-1.8.2",
-      "packageUri": "lib/",
-      "languageVersion": "2.12"
-    },
-    {
-      "name": "provider",
-      "rootUri": "file:///Users/sw/.pub-cache/hosted/pub.dev/provider-6.0.5",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -158,13 +146,13 @@
       "languageVersion": "2.14"
     },
     {
-      "name": "my_app",
+      "name": "my_app_actual",
       "rootUri": "../",
       "packageUri": "lib/",
-      "languageVersion": "2.18"
+      "languageVersion": "2.19"
     }
   ],
-  "generated": "2023-01-26T03:02:44.699983Z",
+  "generated": "2023-01-26T05:25:18.428747Z",
   "generator": "pub",
   "generatorVersion": "2.19.0"
 }
