@@ -8,7 +8,6 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  //I was here.
   // referenced https://docs.flutter.dev/cookbook/design/fonts for tutorial on using custom fonts
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -126,7 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      bottomNavigationBar: //tutorial linked in discord
+      bottomNavigationBar: //referenced https://www.javatpoint.com/flutter-bottom-navigation-bar#:~:text=In%20Flutter%20application%2C%20we%20usually for creating bottom navigation bar
           //LIST OF ALL ICONS: https://api.flutter.dev/flutter/material/Icons-class.html
           BottomNavigationBar(items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
@@ -138,8 +137,8 @@ class _MyHomePageState extends State<MyHomePage> {
             label: 'Home',
             backgroundColor: Colors.green),
         BottomNavigationBarItem(
-            icon: Icon(Icons.info_outline),
-            label: 'Learn More',
+            icon: Icon(Icons.newspaper_sharp),
+            label: 'Articles & Blogs',
             backgroundColor: Colors.green),
       ]),
     );
