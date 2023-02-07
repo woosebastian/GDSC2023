@@ -31,11 +31,6 @@ class MyHomePage extends StatefulWidget {
 // referenced https://docs.flutter.dev/development/ui/layout for adding margins and images to Containers
 class _MyHomePageState extends State<MyHomePage> {
   int mySelectedIndex = 0;
-  // static const List<Widget> _widgetOptions = <Widget>[
-  //   Text('Map Page'),
-  //   Text('Home Page'),
-  //   Text('Profile Page'),
-  // ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -43,123 +38,156 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  //referenced https://github.com/flutter/codelabs/blob/main/namer/step_08/lib/main.dart and https://codelabs.developers.google.com/codelabs/flutter-codelab-first#6 for switching pages
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // referenced https://api.flutter.dev/flutter/material/AppBar-class.html for customizing appbar
-      appBar: AppBar(
-        // look into this website for app bar hotline information: https://www.samhsa.gov/find-help/national-helpline
-        title: const Text(
-          "Hotline",
-          style: TextStyle(color: Colors.white, fontSize: 30),
+    Widget page;
+    switch (mySelectedIndex) {
+      case 0:
+        page = Placeholder();
+        break;
+      case 1:
+        page = HomePage();
+        break;
+      case 2:
+        page = Placeholder();
+        break;
+      default:
+        throw UnimplementedError('no widget for $mySelectedIndex');
+    }
+
+    return LayoutBuilder(builder: (context, constraints) {
+      return Scaffold(
+        // referenced https://api.flutter.dev/flutter/material/AppBar-class.html for customizing appbar
+        appBar: AppBar(
+          // look into this website for app bar hotline information: https://www.samhsa.gov/find-help/national-helpline
+          title: const Text(
+            "Drug Education",
+            style: TextStyle(color: Colors.white, fontSize: 30),
+          ),
+
+          backgroundColor: const Color.fromARGB(255, 150, 173, 227),
+          shadowColor: const Color.fromARGB(255, 150, 173, 227),
+          toolbarOpacity: 0.75,
         ),
 
-        backgroundColor: const Color.fromARGB(255, 142, 163, 212),
-        shadowColor: Colors.teal,
-        toolbarOpacity: 0.5,
-      ),
-
-      body: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: GridView(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2, mainAxisSpacing: 10, crossAxisSpacing: 10),
+        body: Row(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Colors.grey,
-              ),
-              margin: const EdgeInsets.all(4),
-              // for adding images to each grid element
-              // child: Image.asset('images/pic$imageIndex.jpg'),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Text(
-                    "Substance A",
-                    style: TextStyle(color: Colors.white, fontSize: 30),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Colors.grey,
-              ),
-              margin: const EdgeInsets.all(4),
-              // for adding images to each grid element
-              // child: Image.asset('images/pic$imageIndex.jpg'),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Text(
-                    "Substance B",
-                    style: TextStyle(color: Colors.white, fontSize: 30),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Colors.grey,
-              ),
-              margin: const EdgeInsets.all(4),
-              // for adding images to each grid element
-              // child: Image.asset('images/pic$imageIndex.jpg'),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Text(
-                    "Substance C",
-                    style: TextStyle(color: Colors.white, fontSize: 30),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Colors.grey,
-              ),
-              margin: const EdgeInsets.all(4),
-              // for adding images to each grid element
-              // child: Image.asset('images/pic$imageIndex.jpg'),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Text(
-                    "Substance D",
-                    style: TextStyle(color: Colors.white, fontSize: 30),
-                  )
-                ],
+            Expanded(
+              child: Container(
+                child: page,
               ),
             ),
           ],
         ),
-      ),
-      //referenced https://www.javatpoint.com/flutter-bottom-navigation-bar#:~:text=In%20Flutter%20application%2C%20we%20usually for creating bottom navigation bar
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
+        //referenced https://www.javatpoint.com/flutter-bottom-navigation-bar#:~:text=In%20Flutter%20application%2C%20we%20usually and https://api.flutter.dev/flutter/material/BottomNavigationBar-class.html for creating bottom navigation bar
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
               icon: Icon(Icons.map_outlined),
               label: 'Map',
-              backgroundColor: Color.fromARGB(255, 142, 163, 212)),
-          BottomNavigationBarItem(
+            ),
+            BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: 'Home',
-              backgroundColor: Color.fromARGB(255, 142, 163, 212)),
-          BottomNavigationBarItem(
+            ),
+            BottomNavigationBarItem(
               icon: Icon(Icons.newspaper_sharp),
               label: 'Articles & Blogs',
-              backgroundColor: Color.fromARGB(255, 142, 163, 212)),
+            ),
+          ],
+          type: BottomNavigationBarType.fixed,
+          currentIndex: mySelectedIndex,
+          backgroundColor: const Color.fromARGB(255, 174, 221, 227),
+          onTap: _onItemTapped,
+        ),
+      );
+    });
+  }
+}
+
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: GridView(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2, mainAxisSpacing: 10, crossAxisSpacing: 10),
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Colors.grey,
+            ),
+            margin: const EdgeInsets.all(4),
+            // for adding images to each grid element
+            // child: Image.asset('images/pic$imageIndex.jpg'),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Text(
+                  "Substance A",
+                  style: TextStyle(color: Colors.white, fontSize: 30),
+                )
+              ],
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Colors.grey,
+            ),
+            margin: const EdgeInsets.all(4),
+            // for adding images to each grid element
+            // child: Image.asset('images/pic$imageIndex.jpg'),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Text(
+                  "Substance B",
+                  style: TextStyle(color: Colors.white, fontSize: 30),
+                )
+              ],
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Colors.grey,
+            ),
+            margin: const EdgeInsets.all(4),
+            // for adding images to each grid element
+            // child: Image.asset('images/pic$imageIndex.jpg'),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Text(
+                  "Substance C",
+                  style: TextStyle(color: Colors.white, fontSize: 30),
+                )
+              ],
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Colors.grey,
+            ),
+            margin: const EdgeInsets.all(4),
+            // for adding images to each grid element
+            // child: Image.asset('images/pic$imageIndex.jpg'),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Text(
+                  "Substance D",
+                  style: TextStyle(color: Colors.white, fontSize: 30),
+                )
+              ],
+            ),
+          ),
         ],
-        type: BottomNavigationBarType.fixed,
-        currentIndex: mySelectedIndex,
-        selectedItemColor: const Color.fromARGB(255, 5, 76, 109),
-        onTap: _onItemTapped,
       ),
     );
   }
