@@ -1,3 +1,5 @@
+//LIST OF ALL ICONS: https://api.flutter.dev/flutter/material/Icons-class.html
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -28,6 +30,19 @@ class MyHomePage extends StatefulWidget {
 // referenced https://www.youtube.com/watch?v=4pi7CApy4wc for tutorial on GridView
 // referenced https://docs.flutter.dev/development/ui/layout for adding margins and images to Containers
 class _MyHomePageState extends State<MyHomePage> {
+  int mySelectedIndex = 0;
+  // static const List<Widget> _widgetOptions = <Widget>[
+  //   Text('Map Page'),
+  //   Text('Home Page'),
+  //   Text('Profile Page'),
+  // ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      mySelectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
           style: TextStyle(color: Colors.white, fontSize: 30),
         ),
 
-        backgroundColor: Colors.teal,
+        backgroundColor: const Color.fromARGB(255, 142, 163, 212),
         shadowColor: Colors.teal,
         toolbarOpacity: 0.5,
       ),
@@ -125,22 +140,27 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      bottomNavigationBar: //referenced https://www.javatpoint.com/flutter-bottom-navigation-bar#:~:text=In%20Flutter%20application%2C%20we%20usually for creating bottom navigation bar
-          //LIST OF ALL ICONS: https://api.flutter.dev/flutter/material/Icons-class.html
-          BottomNavigationBar(items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-            icon: Icon(Icons.map_outlined),
-            label: 'Map',
-            backgroundColor: Colors.green),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-            backgroundColor: Colors.green),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.newspaper_sharp),
-            label: 'Articles & Blogs',
-            backgroundColor: Colors.green),
-      ]),
+      //referenced https://www.javatpoint.com/flutter-bottom-navigation-bar#:~:text=In%20Flutter%20application%2C%20we%20usually for creating bottom navigation bar
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+              icon: Icon(Icons.map_outlined),
+              label: 'Map',
+              backgroundColor: Color.fromARGB(255, 142, 163, 212)),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+              backgroundColor: Color.fromARGB(255, 142, 163, 212)),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.newspaper_sharp),
+              label: 'Articles & Blogs',
+              backgroundColor: Color.fromARGB(255, 142, 163, 212)),
+        ],
+        type: BottomNavigationBarType.fixed,
+        currentIndex: mySelectedIndex,
+        selectedItemColor: const Color.fromARGB(255, 5, 76, 109),
+        onTap: _onItemTapped,
+      ),
     );
   }
 }
