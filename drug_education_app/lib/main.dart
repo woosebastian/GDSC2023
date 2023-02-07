@@ -44,6 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
         shadowColor: Colors.teal,
         toolbarOpacity: 0.5,
       ),
+
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: GridView(
@@ -125,6 +126,22 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
+      bottomNavigationBar: //tutorial linked in discord
+          //LIST OF ALL ICONS: https://api.flutter.dev/flutter/material/Icons-class.html
+          BottomNavigationBar(items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+            icon: Icon(Icons.map_outlined),
+            label: 'Map',
+            backgroundColor: Colors.green),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+            backgroundColor: Colors.green),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.info_outline),
+            label: 'Learn More',
+            backgroundColor: Colors.green),
+      ]),
     );
   }
 }
