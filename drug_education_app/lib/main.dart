@@ -44,13 +44,13 @@ class _MyHomePageState extends State<MyHomePage> {
     Widget page;
     switch (mySelectedIndex) {
       case 0:
-        page = const Placeholder();
+        page = MapPage();
         break;
       case 1:
         page = HomePage();
         break;
       case 2:
-        page = const Placeholder();
+        page = ArticlePage();
         break;
       default:
         throw UnimplementedError('no widget for $mySelectedIndex');
@@ -106,6 +106,30 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+class MapPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(children: [
+          Container(
+            margin: const EdgeInsets.all(10.0),
+            color: Colors.grey,
+            width: 500.0,
+            height: 350.0,
+            alignment: Alignment.center,
+          ),
+          Container(
+            margin: const EdgeInsets.all(10.0),
+            color: Colors.grey,
+            width: 500.0,
+            height: 245.0,
+            alignment: Alignment.center,
+          ),
+        ]));
+  }
+}
+
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -115,76 +139,205 @@ class HomePage extends StatelessWidget {
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2, mainAxisSpacing: 10, crossAxisSpacing: 10),
         children: [
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: Colors.grey,
-            ),
-            margin: const EdgeInsets.all(4),
-            // for adding images to each grid element
-            // child: Image.asset('images/pic$imageIndex.jpg'),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Text(
-                  "Substance A",
-                  style: TextStyle(color: Colors.white, fontSize: 30),
-                )
-              ],
-            ),
-          ),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: Colors.grey,
-            ),
-            margin: const EdgeInsets.all(4),
-            // for adding images to each grid element
-            // child: Image.asset('images/pic$imageIndex.jpg'),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Text(
-                  "Substance B",
-                  style: TextStyle(color: Colors.white, fontSize: 30),
-                )
-              ],
+          //referenced https://stackoverflow.com/questions/71249312/how-do-i-get-dart-flutter-gridview-items-to-click to allow for clickability for gridview items
+          GestureDetector(
+            onTap: () {
+              print("hello");
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.grey,
+              ),
+              margin: const EdgeInsets.all(4),
+              // for adding images to each grid element
+              // child: Image.asset('images/pic$imageIndex.jpg'),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text(
+                    "Substance A",
+                    style: TextStyle(color: Colors.white, fontSize: 30),
+                  )
+                ],
+              ),
             ),
           ),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: Colors.grey,
-            ),
-            margin: const EdgeInsets.all(4),
-            // for adding images to each grid element
-            // child: Image.asset('images/pic$imageIndex.jpg'),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Text(
-                  "Substance C",
-                  style: TextStyle(color: Colors.white, fontSize: 30),
-                )
-              ],
+          GestureDetector(
+            onTap: () {
+              print("hello");
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.grey,
+              ),
+              margin: const EdgeInsets.all(4),
+              // for adding images to each grid element
+              // child: Image.asset('images/pic$imageIndex.jpg'),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text(
+                    "Substance B",
+                    style: TextStyle(color: Colors.white, fontSize: 30),
+                  )
+                ],
+              ),
             ),
           ),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: Colors.grey,
+          GestureDetector(
+            onTap: () {
+              print("hello");
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.grey,
+              ),
+              margin: const EdgeInsets.all(4),
+              // for adding images to each grid element
+              // child: Image.asset('images/pic$imageIndex.jpg'),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text(
+                    "Substance C",
+                    style: TextStyle(color: Colors.white, fontSize: 30),
+                  )
+                ],
+              ),
             ),
-            margin: const EdgeInsets.all(4),
-            // for adding images to each grid element
-            // child: Image.asset('images/pic$imageIndex.jpg'),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Text(
-                  "Substance D",
-                  style: TextStyle(color: Colors.white, fontSize: 30),
-                )
-              ],
+          ),
+          GestureDetector(
+            onTap: () {
+              print("hello");
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.grey,
+              ),
+              margin: const EdgeInsets.all(4),
+              // for adding images to each grid element
+              // child: Image.asset('images/pic$imageIndex.jpg'),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text(
+                    "Substance D",
+                    style: TextStyle(color: Colors.white, fontSize: 30),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ArticlePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: GridView(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2, mainAxisSpacing: 10, crossAxisSpacing: 10),
+        children: [
+          //referenced https://stackoverflow.com/questions/71249312/how-do-i-get-dart-flutter-gridview-items-to-click to allow for clickability for gridview items
+          GestureDetector(
+            onTap: () {
+              print("hello");
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.grey,
+              ),
+              margin: const EdgeInsets.all(4),
+              // for adding images to each grid element
+              // child: Image.asset('images/pic$imageIndex.jpg'),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text(
+                    "Substance A",
+                    style: TextStyle(color: Colors.white, fontSize: 30),
+                  )
+                ],
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              print("hello");
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.grey,
+              ),
+              margin: const EdgeInsets.all(4),
+              // for adding images to each grid element
+              // child: Image.asset('images/pic$imageIndex.jpg'),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text(
+                    "Substance B",
+                    style: TextStyle(color: Colors.white, fontSize: 30),
+                  )
+                ],
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              print("hello");
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.grey,
+              ),
+              margin: const EdgeInsets.all(4),
+              // for adding images to each grid element
+              // child: Image.asset('images/pic$imageIndex.jpg'),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text(
+                    "Substance C",
+                    style: TextStyle(color: Colors.white, fontSize: 30),
+                  )
+                ],
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              print("hello");
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.grey,
+              ),
+              margin: const EdgeInsets.all(4),
+              // for adding images to each grid element
+              // child: Image.asset('images/pic$imageIndex.jpg'),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text(
+                    "Substance D",
+                    style: TextStyle(color: Colors.white, fontSize: 30),
+                  )
+                ],
+              ),
             ),
           ),
         ],
