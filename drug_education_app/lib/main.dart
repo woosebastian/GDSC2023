@@ -27,7 +27,6 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-// referenced https://www.youtube.com/watch?v=4pi7CApy4wc for tutorial on GridView
 // referenced https://docs.flutter.dev/development/ui/layout for adding margins and images to Containers
 class _MyHomePageState extends State<MyHomePage> {
   int mySelectedIndex = 0;
@@ -80,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ],
         ),
-        //referenced https://www.javatpoint.com/flutter-bottom-navigation-bar#:~:text=In%20Flutter%20application%2C%20we%20usually and https://api.flutter.dev/flutter/material/BottomNavigationBar-class.html for creating bottom navigation bar
+        //referenced https://www.javatpoint.com/flutter-bottom-navigation-bar#:~:text=In%20Flutter%20application%2C%20we%20usually and https://api.flutter.dev/flutter/material/BottomNavigationBar-class.html for creating Bottom Navigation Bar
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
@@ -111,6 +110,7 @@ class MapPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.all(10.0),
+        //referenced https://api.flutter.dev/flutter/widgets/Container-class.html for tutorial on Containers
         child: Column(children: [
           Container(
             margin: const EdgeInsets.all(10.0),
@@ -135,6 +135,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
+      // referenced https://www.youtube.com/watch?v=4pi7CApy4wc for tutorial on GridView
       child: GridView(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2, mainAxisSpacing: 10, crossAxisSpacing: 10),
