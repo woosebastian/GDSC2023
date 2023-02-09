@@ -1,6 +1,8 @@
 //LIST OF ALL ICONS: https://api.flutter.dev/flutter/material/Icons-class.html
 
 import 'package:flutter/material.dart';
+import 'articles.dart';
+import 'maps.dart';
 
 void main() {
   runApp(const MyApp());
@@ -29,7 +31,13 @@ class MyHomePage extends StatefulWidget {
 
 // referenced https://docs.flutter.dev/development/ui/layout for adding margins and images to Containers
 class _MyHomePageState extends State<MyHomePage> {
+  //Navigating between pages + Bottom Nav bar: https://www.youtube.com/watch?v=18PVdmBOEQM
   int mySelectedIndex = 0;
+  final List<Widget> _children = [
+    Maps(),
+    HomePage(),
+    Articles(),
+  ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -40,21 +48,6 @@ class _MyHomePageState extends State<MyHomePage> {
   //referenced https://github.com/flutter/codelabs/blob/main/namer/step_08/lib/main.dart and https://codelabs.developers.google.com/codelabs/flutter-codelab-first#6 for switching pages
   @override
   Widget build(BuildContext context) {
-    Widget page;
-    switch (mySelectedIndex) {
-      case 0:
-        page = MapPage();
-        break;
-      case 1:
-        page = HomePage();
-        break;
-      case 2:
-        page = ArticlePage();
-        break;
-      default:
-        throw UnimplementedError('no widget for $mySelectedIndex');
-    }
-
     return LayoutBuilder(builder: (context, constraints) {
       return Scaffold(
         // referenced https://api.flutter.dev/flutter/material/AppBar-class.html for customizing appbar
@@ -70,17 +63,21 @@ class _MyHomePageState extends State<MyHomePage> {
           toolbarOpacity: 0.75,
         ),
 
-        body: Row(
-          children: [
-            Expanded(
-              child: Container(
-                child: page,
-              ),
-            ),
-          ],
-        ),
+        body: _children[mySelectedIndex],
+        // body: Row(
+        //   children: [
+        //     Expanded(
+        //       child: Container(
+        //         child: page,
+        //       ),
+        //     ),
+        //   ],
+        // ),
         //referenced https://www.javatpoint.com/flutter-bottom-navigation-bar#:~:text=In%20Flutter%20application%2C%20we%20usually and https://api.flutter.dev/flutter/material/BottomNavigationBar-class.html for creating Bottom Navigation Bar
         bottomNavigationBar: BottomNavigationBar(
+          currentIndex: mySelectedIndex,
+          backgroundColor: const Color.fromARGB(255, 174, 221, 227),
+          onTap: _onItemTapped,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.map_outlined),
@@ -96,9 +93,6 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ],
           type: BottomNavigationBarType.fixed,
-          currentIndex: mySelectedIndex,
-          backgroundColor: const Color.fromARGB(255, 174, 221, 227),
-          onTap: _onItemTapped,
         ),
       );
     });
