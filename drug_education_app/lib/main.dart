@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  // referenced https://docs.flutter.dev/cookbook/design/fonts for tutorial on using custom fonts
+  //custom fonts: https://docs.flutter.dev/cookbook/design/fonts
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Drug Education App',
@@ -29,14 +29,13 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-// referenced https://docs.flutter.dev/development/ui/layout for adding margins and images to Containers
 class _MyHomePageState extends State<MyHomePage> {
   //Navigating between pages + Bottom Nav bar: https://www.youtube.com/watch?v=18PVdmBOEQM
   int mySelectedIndex = 0;
   final List<Widget> _children = [
-    Maps(),
-    HomePage(),
-    Articles(),
+    const Maps(),
+    const HomePage(),
+    const Articles(),
   ];
 
   void _onItemTapped(int index) {
@@ -45,14 +44,13 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  //referenced https://github.com/flutter/codelabs/blob/main/namer/step_08/lib/main.dart and https://codelabs.developers.google.com/codelabs/flutter-codelab-first#6 for switching pages
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       return Scaffold(
-        // referenced https://api.flutter.dev/flutter/material/AppBar-class.html for customizing appbar
+        //customizing AppBar: https://api.flutter.dev/flutter/material/AppBar-class.html
         appBar: AppBar(
-          // look into this website for app bar hotline information: https://www.samhsa.gov/find-help/national-helpline
+          //app bar hotline information: https://www.samhsa.gov/find-help/national-helpline
           title: const Text(
             "Drug Education",
             style: TextStyle(color: Colors.white, fontSize: 30),
@@ -73,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
         //     ),
         //   ],
         // ),
-        //referenced https://www.javatpoint.com/flutter-bottom-navigation-bar#:~:text=In%20Flutter%20application%2C%20we%20usually and https://api.flutter.dev/flutter/material/BottomNavigationBar-class.html for creating Bottom Navigation Bar
+        //creating Bottom Navigation Bar: https://www.javatpoint.com/flutter-bottom-navigation-bar#:~:text=In%20Flutter%20application%2C%20we%20usually and https://api.flutter.dev/flutter/material/BottomNavigationBar-class.html
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: mySelectedIndex,
           backgroundColor: const Color.fromARGB(255, 174, 221, 227),
@@ -99,154 +97,22 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class MapPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.all(10.0),
-        //referenced https://api.flutter.dev/flutter/widgets/Container-class.html for tutorial on Containers
-        child: Column(children: [
-          Container(
-            margin: const EdgeInsets.all(10.0),
-            color: Colors.grey,
-            width: 500.0,
-            height: 350.0,
-            alignment: Alignment.center,
-          ),
-          Container(
-            margin: const EdgeInsets.all(10.0),
-            color: Colors.grey,
-            width: 500.0,
-            height: 245.0,
-            alignment: Alignment.center,
-          ),
-        ]));
-  }
-}
-
 class HomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      // referenced https://www.youtube.com/watch?v=4pi7CApy4wc for tutorial on GridView
-      child: GridView(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, mainAxisSpacing: 10, crossAxisSpacing: 10),
-        children: [
-          //referenced https://stackoverflow.com/questions/71249312/how-do-i-get-dart-flutter-gridview-items-to-click to allow for clickability for gridview items
-          GestureDetector(
-            onTap: () {
-              print("hello");
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Colors.grey,
-              ),
-              margin: const EdgeInsets.all(4),
-              // for adding images to each grid element
-              // child: Image.asset('images/pic$imageIndex.jpg'),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Text(
-                    "Substance A",
-                    style: TextStyle(color: Colors.white, fontSize: 30),
-                  )
-                ],
-              ),
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              print("hello");
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Colors.grey,
-              ),
-              margin: const EdgeInsets.all(4),
-              // for adding images to each grid element
-              // child: Image.asset('images/pic$imageIndex.jpg'),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Text(
-                    "Substance B",
-                    style: TextStyle(color: Colors.white, fontSize: 30),
-                  )
-                ],
-              ),
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              print("hello");
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Colors.grey,
-              ),
-              margin: const EdgeInsets.all(4),
-              // for adding images to each grid element
-              // child: Image.asset('images/pic$imageIndex.jpg'),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Text(
-                    "Substance C",
-                    style: TextStyle(color: Colors.white, fontSize: 30),
-                  )
-                ],
-              ),
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              print("hello");
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Colors.grey,
-              ),
-              margin: const EdgeInsets.all(4),
-              // for adding images to each grid element
-              // child: Image.asset('images/pic$imageIndex.jpg'),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Text(
-                    "Substance D",
-                    style: TextStyle(color: Colors.white, fontSize: 30),
-                  )
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+  const HomePage({super.key});
 
-class ArticlePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
+      //GridView: https://www.youtube.com/watch?v=4pi7CApy4wc
       child: GridView(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2, mainAxisSpacing: 10, crossAxisSpacing: 10),
         children: [
-          //referenced https://stackoverflow.com/questions/71249312/how-do-i-get-dart-flutter-gridview-items-to-click to allow for clickability for gridview items
+          //clickability for GridView items: https://stackoverflow.com/questions/71249312/how-do-i-get-dart-flutter-gridview-items-to-click
+          //adding margins and images to Containers: https://docs.flutter.dev/development/ui/layout
           GestureDetector(
-            onTap: () {
-              print("hello");
-            },
+            onTap: () {},
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
@@ -267,9 +133,7 @@ class ArticlePage extends StatelessWidget {
             ),
           ),
           GestureDetector(
-            onTap: () {
-              print("hello");
-            },
+            onTap: () {},
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
@@ -290,9 +154,7 @@ class ArticlePage extends StatelessWidget {
             ),
           ),
           GestureDetector(
-            onTap: () {
-              print("hello");
-            },
+            onTap: () {},
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
@@ -313,9 +175,7 @@ class ArticlePage extends StatelessWidget {
             ),
           ),
           GestureDetector(
-            onTap: () {
-              print("hello");
-            },
+            onTap: () {},
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
