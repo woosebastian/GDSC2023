@@ -1,6 +1,8 @@
 //LIST OF ALL ICONS: https://api.flutter.dev/flutter/material/Icons-class.html
 
 import 'package:flutter/material.dart';
+// ignore: library_prefixes
+import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 import 'articles.dart';
 import 'maps.dart';
 
@@ -50,12 +52,10 @@ class _MyHomePageState extends State<MyHomePage> {
       return Scaffold(
         //customizing AppBar: https://api.flutter.dev/flutter/material/AppBar-class.html
         appBar: AppBar(
-          //app bar hotline information: https://www.samhsa.gov/find-help/national-helpline
           title: const Text(
             "Drug Education",
             style: TextStyle(color: Colors.white, fontSize: 30),
           ),
-
           backgroundColor: const Color.fromARGB(255, 150, 173, 227),
           shadowColor: const Color.fromARGB(255, 150, 173, 227),
           toolbarOpacity: 0.75,
@@ -69,6 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
               MaterialPageRoute(builder: (context) => const Hotline()),
             );
           },
+          tooltip: "Call",
           child: const Icon(
             Icons.phone,
             color: Colors.white,
@@ -213,13 +214,41 @@ class Hotline extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: const Text('Go back!'),
-        ),
-      ),
+          child: Column(
+        children: [
+          //SizedBox: https://github.com/flutter/codelabs/blob/main/namer/step_08/lib/main.dart
+          const Padding(
+            padding: EdgeInsets.fromLTRB(20.0, 200, 20.0, 10),
+            //Text styling: https://api.flutter.dev/flutter/painting/TextStyle-class.html and https://stackoverflow.com/questions/50554110/how-do-i-center-text-vertically-and-horizontally-in-flutter
+            child: Text(
+              "Substance Abuse and Mental Health Services Administration: \n 1-800-662-HELP (4357)",
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, height: 1.5, fontSize: 30),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          Padding(
+            //IconButton: https://www.javatpoint.com/flutter-buttons
+            //navigating to URL: https://www.youtube.com/watch?v=nf4_Ke5B1K8 and https://stackoverflow.com/questions/66473263/the-argument-type-string-cant-be-assigned-to-the-parameter-type-uri
+            padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 100),
+            child: IconButton(
+              onPressed: () {
+                UrlLauncher.launchUrl(Uri.parse("tel:1-800-662-4357"));
+              },
+              icon: const Icon(Icons.phone),
+              iconSize: 40,
+              color: Colors.green,
+              tooltip: "Call SAMHSA",
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('Return'),
+          ),
+        ],
+      )),
     );
   }
 }
