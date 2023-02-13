@@ -26,7 +26,7 @@ class _MapsState extends State<Maps> {
                             borderRadius: BorderRadius.circular(10),
                             color: Colors.grey,
                           ),
-                          margin: const EdgeInsets.fromLTRB(10, 20, 10, 10)))),
+                          margin: const EdgeInsets.fromLTRB(10, 10, 10, 10)))),
               Expanded(
                   child: Align(
                       child: Container(

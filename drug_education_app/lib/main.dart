@@ -60,17 +60,16 @@ class _MyHomePageState extends State<MyHomePage> {
           shadowColor: const Color.fromARGB(255, 150, 173, 227),
           toolbarOpacity: 0.75,
         ),
-
         body: _children[mySelectedIndex],
-        // body: Row(
-        //   children: [
-        //     Expanded(
-        //       child: Container(
-        //         child: page,
-        //       ),
-        //     ),
-        //   ],
-        // ),
+        //creating floating button: https://androidride.com/flutter-bottom-button/
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          child: const Icon(
+            Icons.phone,
+            color: Colors.white,
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         //creating Bottom Navigation Bar: https://www.javatpoint.com/flutter-bottom-navigation-bar#:~:text=In%20Flutter%20application%2C%20we%20usually and https://api.flutter.dev/flutter/material/BottomNavigationBar-class.html
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: mySelectedIndex,
