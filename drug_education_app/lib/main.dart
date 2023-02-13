@@ -63,7 +63,12 @@ class _MyHomePageState extends State<MyHomePage> {
         body: _children[mySelectedIndex],
         //creating floating button: https://androidride.com/flutter-bottom-button/
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const Hotline()),
+            );
+          },
           child: const Icon(
             Icons.phone,
             color: Colors.white,
@@ -195,6 +200,25 @@ class HomePage extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+//navigating to new page: https://docs.flutter.dev/cookbook/navigation/navigation-basics
+class Hotline extends StatelessWidget {
+  const Hotline({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text('Go back!'),
+        ),
       ),
     );
   }
