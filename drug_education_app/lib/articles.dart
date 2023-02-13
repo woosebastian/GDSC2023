@@ -23,9 +23,9 @@ class MyCustomForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: const [
-        Padding(
-            padding: EdgeInsets.symmetric(horizontal: 40, vertical: 16),
+      children: [
+        const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 40, vertical: 25),
             child: TextField(
               cursorColor: Color.fromARGB(255, 150, 173, 227),
               decoration: InputDecoration(
@@ -37,8 +37,45 @@ class MyCustomForm extends StatelessWidget {
                           color: Color.fromARGB(255, 150, 173, 227), width: 3)),
                   border: OutlineInputBorder(),
                   hintText: 'Enter a search term'),
-            ))
+            )),
+        Column(
+          children: [
+            buildArticleCard(),
+            buildArticleCard(),
+            buildArticleCard(),
+            buildArticleCard(),
+          ],
+        ),
       ],
+    );
+  }
+
+  Widget buildArticleCard() {
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.red,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: const [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 5),
+            child: Text(
+              'Article Title',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 10),
+            child: Text(
+              'Article Description',
+            ),
+          )
+        ],
+      ),
     );
   }
 }
