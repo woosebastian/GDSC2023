@@ -32,7 +32,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   //Navigating between pages + Bottom Nav bar: https://www.youtube.com/watch?v=18PVdmBOEQM
-  int mySelectedIndex = 0;
+  int mySelectedIndex = 1;
   final List<Widget> _children = [
     const Maps(),
     const HomePage(),
