@@ -1,8 +1,7 @@
 //LIST OF ALL ICONS: https://api.flutter.dev/flutter/material/Icons-class.html
 
 import 'package:flutter/material.dart';
-// ignore: library_prefixes
-// import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
+import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 import 'articles.dart';
 import 'maps.dart';
 
@@ -233,7 +232,7 @@ class Hotline extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 100),
             child: IconButton(
               onPressed: () {
-                // UrlLauncher.launchUrl(Uri.parse("tel:1-800-662-4357"));
+                UrlLauncher.launchUrl(Uri.parse("tel:1-800-662-4357"));
               },
               icon: const Icon(Icons.phone),
               iconSize: 40,
