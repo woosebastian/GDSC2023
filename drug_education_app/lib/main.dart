@@ -1,7 +1,7 @@
 //LIST OF ALL ICONS: https://api.flutter.dev/flutter/material/Icons-class.html
 
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
+import 'package:url_launcher/url_launcher.dart' as urllauncher;
 import 'articles.dart';
 import 'maps.dart';
 
@@ -217,43 +217,100 @@ class Hotline extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final deviceOrientation = MediaQuery.of(context).orientation;
+
     return Scaffold(
       body: Center(
-          child: Column(
-        children: [
-          //SizedBox: https://github.com/flutter/codelabs/blob/main/namer/step_08/lib/main.dart
-          const Padding(
-            padding: EdgeInsets.fromLTRB(20.0, 200, 20.0, 10),
-            //Text styling: https://api.flutter.dev/flutter/painting/TextStyle-class.html and https://stackoverflow.com/questions/50554110/how-do-i-center-text-vertically-and-horizontally-in-flutter
-            child: Text(
-              "Substance Abuse and Mental Health Services Administration: \n 1-800-662-HELP (4357)",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold, height: 1.5, fontSize: 30),
-              textAlign: TextAlign.center,
-            ),
+          //changing pages depending on orientation: https://www.youtube.com/watch?v=_PR6C1kGbp8
+          child: deviceOrientation == Orientation.portrait
+              ? const HotlinePortrait()
+              : const HotlineLandscape()),
+    );
+  }
+}
+
+class HotlinePortrait extends StatelessWidget {
+  const HotlinePortrait({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        //SizedBox: https://github.com/flutter/codelabs/blob/main/namer/step_08/lib/main.dart
+        const Padding(
+          padding: EdgeInsets.fromLTRB(20.0, 200, 20.0, 10),
+          //Text styling: https://api.flutter.dev/flutter/painting/TextStyle-class.html and https://stackoverflow.com/questions/50554110/how-do-i-center-text-vertically-and-horizontally-in-flutter
+          child: Text(
+            "Substance Abuse and Mental Health Services Administration: \n 1-800-662-HELP (4357)",
+            style: TextStyle(
+                fontWeight: FontWeight.bold, height: 1.5, fontSize: 30),
+            textAlign: TextAlign.center,
           ),
-          Padding(
-            //IconButton: https://www.javatpoint.com/flutter-buttons
-            //navigating to URL: https://www.youtube.com/watch?v=nf4_Ke5B1K8 and https://stackoverflow.com/questions/66473263/the-argument-type-string-cant-be-assigned-to-the-parameter-type-uri
-            padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 100),
-            child: IconButton(
-              onPressed: () {
-                UrlLauncher.launchUrl(Uri.parse("tel:1-800-662-4357"));
-              },
-              icon: const Icon(Icons.phone),
-              iconSize: 40,
-              color: Colors.green,
-              tooltip: "Call SAMHSA",
-            ),
-          ),
-          ElevatedButton(
+        ),
+        Padding(
+          //IconButton: https://www.javatpoint.com/flutter-buttons
+          //navigating to URL: https://www.youtube.com/watch?v=nf4_Ke5B1K8 and https://stackoverflow.com/questions/66473263/the-argument-type-string-cant-be-assigned-to-the-parameter-type-uri
+          padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 100),
+          child: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              urllauncher.launchUrl(Uri.parse("tel:1-800-662-4357"));
             },
-            child: const Text('Return'),
+            icon: const Icon(Icons.phone),
+            iconSize: 40,
+            color: Colors.green,
+            tooltip: "Call SAMHSA",
           ),
-        ],
-      )),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text('Return'),
+        ),
+      ],
+    );
+  }
+}
+
+class HotlineLandscape extends StatelessWidget {
+  const HotlineLandscape({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        //SizedBox: https://github.com/flutter/codelabs/blob/main/namer/step_08/lib/main.dart
+        const Padding(
+          padding: EdgeInsets.fromLTRB(60, 60, 20, 20),
+          //Text styling: https://api.flutter.dev/flutter/painting/TextStyle-class.html and https://stackoverflow.com/questions/50554110/how-do-i-center-text-vertically-and-horizontally-in-flutter
+          child: Text(
+            "Substance Abuse and Mental Health Services Administration: \n 1-800-662-HELP (4357)",
+            style: TextStyle(
+                fontWeight: FontWeight.bold, height: 1.5, fontSize: 30),
+            textAlign: TextAlign.center,
+          ),
+        ),
+        Padding(
+          //IconButton: https://www.javatpoint.com/flutter-buttons
+          //navigating to URL: https://www.youtube.com/watch?v=nf4_Ke5B1K8 and https://stackoverflow.com/questions/66473263/the-argument-type-string-cant-be-assigned-to-the-parameter-type-uri
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+          child: IconButton(
+            onPressed: () {
+              urllauncher.launchUrl(Uri.parse("tel:1-800-662-4357"));
+            },
+            icon: const Icon(Icons.phone),
+            iconSize: 40,
+            color: Colors.green,
+            tooltip: "Call SAMHSA",
+          ),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text('Return'),
+        ),
+      ],
     );
   }
 }
