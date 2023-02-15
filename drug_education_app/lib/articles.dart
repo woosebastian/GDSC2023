@@ -16,6 +16,7 @@ class _ArticlesState extends State<Articles> {
   }
 }
 
+//search bar + rest of the home page
 class MyCustomForm extends StatelessWidget {
   const MyCustomForm({super.key});
 
@@ -38,28 +39,50 @@ class MyCustomForm extends StatelessWidget {
                   border: OutlineInputBorder(),
                   hintText: 'Enter a search term'),
             )),
-        Column(
-          children: [
-            buildArticleCard(),
-            buildArticleCard(),
-            buildArticleCard(),
-            buildArticleCard(),
-          ],
-        ),
+        SizedBox(
+            height: 600,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  buildArticleCard(),
+                  buildArticleCard(),
+                  buildArticleCard(),
+                  buildArticleCard(),
+                  buildArticleCard(),
+                  buildArticleCard(),
+                  buildArticleCard(),
+                ],
+              ),
+            ))
       ],
     );
   }
 
   Widget buildArticleCard() {
     return Container(
-      decoration: const BoxDecoration(
-        color: Colors.red,
-      ),
+      margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+      width: 800,
+      decoration: BoxDecoration(
+          border: Border.all(color: Colors.black),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 1,
+              blurRadius: 2,
+              offset: const Offset(3, 3),
+            )
+          ]),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: const [
+          //ARTICLE TITLE
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 5),
+            padding: EdgeInsets.only(
+              left: 20,
+              top: 10,
+              bottom: 5,
+            ),
             child: Text(
               'Article Title',
               style: TextStyle(
@@ -68,10 +91,20 @@ class MyCustomForm extends StatelessWidget {
               ),
             ),
           ),
+          //ARTICLE DESCRIPTION
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 10),
-            child: Text(
-              'Article Description',
+            padding: EdgeInsets.only(
+              left: 20,
+              bottom: 10,
+            ),
+            child: SizedBox(
+              height: 50,
+              width: 180,
+              child: SingleChildScrollView(
+                //Adding a scrollbar to handle overflow text: https://stackoverflow.com/questions/55515671/make-scrollable-text-inside-container-in-flutter
+                child: Text(
+                    'Article Description: Insert Description here. Some more text to check if the description is working'),
+              ),
             ),
           )
         ],
