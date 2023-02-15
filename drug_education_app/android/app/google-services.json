@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "991206164123",
+    "project_id": "drug-education-app",
+    "storage_bucket": "drug-education-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:991206164123:android:f9f4690bff3590ec2a683e",
+        "android_client_info": {
+          "package_name": "com.example.drug_education_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOKB6NZWeCzbsJYdWZeVpg-a74hKbAdwo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,25 +1,42 @@
 //LIST OF ALL ICONS: https://api.flutter.dev/flutter/material/Icons-class.html
+//connecting Flutter to Firebase: https://www.youtube.com/watch?v=ok6se5sOthw and https://www.youtube.com/watch?v=EXp0gq9kGxI&t=9s
 
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart' as urllauncher;
 import 'articles.dart';
 import 'maps.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final Future<FirebaseApp> _fbApp = Firebase.initializeApp();
+  MyApp({super.key});
 
   @override
   //custom fonts: https://docs.flutter.dev/cookbook/design/fonts
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Drug Education App',
-      theme: ThemeData(primarySwatch: Colors.blue, fontFamily: 'RobotoSlab'),
-      home: const MyHomePage(),
-    );
+        title: 'Drug Education App',
+        theme: ThemeData(primarySwatch: Colors.blue, fontFamily: 'RobotoSlab'),
+        home: FutureBuilder(
+          future: _fbApp,
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              print('You have an error! ${snapshot.error.toString()}');
+              return const Text('Something went wrong!');
+            } else if (snapshot.hasData) {
+              return const MyHomePage();
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        ));
   }
 }
 
