@@ -8,11 +8,18 @@ class Articles extends StatefulWidget {
 }
 
 class _ArticlesState extends State<Articles> {
+  //Orientation Builder: https://medium.flutterdevs.com/screen-orientation-in-flutter-96526f2c1e7f
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: MyCustomForm(),
-    );
+    return Scaffold(body: OrientationBuilder(builder: (context, orientation) {
+      if (orientation == Orientation.portrait) {
+        return const MyCustomForm();
+      } else {
+        return const LandscapeArticlesPage();
+      }
+    })
+        // body: MyCustomForm(),
+        );
   }
 }
 
@@ -110,5 +117,14 @@ class MyCustomForm extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class LandscapeArticlesPage extends StatelessWidget {
+  const LandscapeArticlesPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
   }
 }
