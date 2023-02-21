@@ -125,6 +125,44 @@ class LandscapeArticlesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+            width: 300,
+            height: 800,
+            // padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 25),
+            decoration: BoxDecoration(color: Colors.white, boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 1,
+                blurRadius: 2,
+                offset: const Offset(1, 1),
+              ),
+            ]),
+            child: Container(
+                width: 300,
+                padding: const EdgeInsets.only(
+                  left: 20,
+                  top: 10,
+                  bottom: 5,
+                  right: 20,
+                ),
+                child: const TextField(
+                  cursorColor: Color.fromARGB(255, 150, 173, 227),
+                  decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromARGB(255, 174, 221, 227),
+                              width: 2)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromARGB(255, 150, 173, 227),
+                              width: 3)),
+                      border: OutlineInputBorder(),
+                      hintText: 'Enter a search term'),
+                )))
+      ],
+    );
   }
 }
