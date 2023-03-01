@@ -1,5 +1,5 @@
 //LIST OF ALL ICONS: https://api.flutter.dev/flutter/material/Icons-class.html
-//connecting Flutter to Firebase: https://www.youtube.com/watch?v=ok6se5sOthw and https://www.youtube.com/watch?v=EXp0gq9kGxI&t=9s
+//connecting Flutter to Firebase: https://www.youtube.com/watch?v=ok6se5sOthw, https://www.youtube.com/watch?v=EXp0gq9kGxI&t=9s, https://firebase.flutter.dev/docs/overview/#initialization
 
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart' as urllauncher;
