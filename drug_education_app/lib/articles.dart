@@ -131,7 +131,7 @@ class LandscapeArticlesPage extends StatelessWidget {
         Container(
             width: 300,
             height: 800,
-            // padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 25),
+            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 25),
             decoration: BoxDecoration(color: Colors.white, boxShadow: [
               BoxShadow(
                 color: Colors.grey.withOpacity(0.5),
