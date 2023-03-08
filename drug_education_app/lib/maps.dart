@@ -16,7 +16,7 @@ class _MapsState extends State<Maps> {
     return Scaffold(
         body: Center(
             child: deviceOrientation == Orientation.portrait
-                ? const MapSample() //changed this just for debugging, will change back to MapPortrait
+                ? const MapsPortrait() //changed this just for debugging, will change back to MapPortrait
                 : const MapsLandscape()));
   }
 }
@@ -29,33 +29,24 @@ class MapsPortrait extends StatelessWidget {
     return Column(children: [
 //https://www.youtube.com/watch?v=sL74UNLssV8 - tutorial im following rn
       //=================== i am trying to move the map here eventually, ignore this====
-      // MaterialApp(
-      //     theme: ThemeData(
-      //       useMaterial3: true,
-      //       colorSchemeSeed: Colors.green[700],
+      const SizedBox(
+        height: 350,
+        child: GoogleMap(
+          mapType: MapType.normal,
+          myLocationEnabled: true,
+          initialCameraPosition:
+              CameraPosition(target: LatLng(36.9741, -122.0308)),
+        ),
+      ),
+      // Container(
+      //     height: 450,
+      //     decoration: BoxDecoration(
+      //       borderRadius: BorderRadius.circular(10),
+      //       color: Colors.grey,
       //     ),
-      //     home: Scaffold(
-      //         appBar: AppBar(
-      //           title: const Text('Maps'),
-      //           elevation: 2,
-      //         ),
-      //         body: GoogleMap(
-      //           onMapCreated: _onMapCreated,
-      //           initialCameraPosition: CameraPosition(
-      //             target: _center,
-      //             zoom: 11.0,
-      //           ),
-      //         ))),
-      //===============================================================================
+      //     margin: const EdgeInsets.fromLTRB(20, 20, 20, 5)),
       Container(
-          height: 450,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Colors.grey,
-          ),
-          margin: const EdgeInsets.fromLTRB(20, 20, 20, 5)),
-      Container(
-          height: 210,
+          height: 330,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: Colors.grey,
@@ -91,35 +82,35 @@ class MapsLandscape extends StatelessWidget {
 
 //The actual map itself - TEMPORARY, WILL REMOVE LATER, TRYING SOMETHING NEW RN, DW ABOUT IT
 //TUTORIAL: https://codelabs.developers.google.com/codelabs/google-maps-in-flutter#3
-class MapSample extends StatefulWidget {
-  const MapSample({super.key});
+// class MapSample extends StatefulWidget {
+//   const MapSample({super.key});
 
-  @override
-  State<MapSample> createState() => _MapSampleState();
-}
+//   @override
+//   State<MapSample> createState() => _MapSampleState();
+// }
 
-class _MapSampleState extends State<MapSample> {
-  late GoogleMapController mapController;
+// class _MapSampleState extends State<MapSample> {
+//   late GoogleMapController mapController;
 
-  final LatLng _center = const LatLng(45.52, 122.677433);
-  void _onMapCreated(GoogleMapController controller) {
-    mapController = controller;
-  }
+//   final LatLng _center = const LatLng(45.52, 122.677433);
+//   void _onMapCreated(GoogleMapController controller) {
+//     mapController = controller;
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-        theme: ThemeData(
-          useMaterial3: true,
-          colorSchemeSeed: Colors.green[700],
-        ),
-        home: Scaffold(
-            body: GoogleMap(
-          onMapCreated: _onMapCreated,
-          initialCameraPosition: CameraPosition(
-            target: _center,
-            zoom: 11.0,
-          ),
-        )));
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//         theme: ThemeData(
+//           useMaterial3: true,
+//           colorSchemeSeed: Colors.green[700],
+//         ),
+//         home: Scaffold(
+//             body: GoogleMap(
+//           onMapCreated: _onMapCreated,
+//           initialCameraPosition: CameraPosition(
+//             target: _center,
+//             zoom: 11.0,
+//           ),
+//         )));
+//   }
+// }
