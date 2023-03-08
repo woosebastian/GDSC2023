@@ -28,7 +28,7 @@ class MapsPortrait extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(children: [
 //https://www.youtube.com/watch?v=sL74UNLssV8 - tutorial im following rn
-      //=================== i am trying to move the map here eventually, ignore this====
+      //THE ACTUAL MAP
       const SizedBox(
         height: 350,
         child: GoogleMap(
@@ -80,6 +80,8 @@ class MapsLandscape extends StatelessWidget {
   }
 }
 
+
+//IGNORE EVERYTHING BELOW THIS LINE BUT PLS DONT DELETE YET TY <3 ===========================================
 //The actual map itself - TEMPORARY, WILL REMOVE LATER, TRYING SOMETHING NEW RN, DW ABOUT IT
 //TUTORIAL: https://codelabs.developers.google.com/codelabs/google-maps-in-flutter#3
 // class MapSample extends StatefulWidget {
