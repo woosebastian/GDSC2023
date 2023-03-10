@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Maps extends StatefulWidget {
   const Maps({super.key});
@@ -21,30 +22,81 @@ class _MapsState extends State<Maps> {
   }
 }
 
-class MapsPortrait extends StatelessWidget {
+class MapsPortrait extends StatefulWidget {
   const MapsPortrait({super.key});
+
+  @override
+  State<MapsPortrait> createState() => _MapsPortraitState();
+}
+
+class _MapsPortraitState extends State<MapsPortrait> {
+  var coords = [];
+
+  Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
+
+  void initMarker(specify, specifyId) async {
+    var markerIdVal = specifyId;
+    final MarkerId markerId = MarkerId(markerIdVal);
+    final Marker marker = Marker(
+        markerId: markerId,
+        position:
+            LatLng(specify['Location'].latitude, specify['Location'].longitude),
+        infoWindow: InfoWindow(title: specify['Name']));
+    setState(() {
+      markers[markerId] = marker;
+    });
+  }
+
+//get markers from firestore
+  getMarkerData() async {
+    FirebaseFirestore.instance
+        .collection('Health Center Coordinates')
+        .get()
+        .then((myMockData) {
+      if (myMockData.docs.isNotEmpty) {
+        for (int i = 0; i < myMockData.docs.length; i++) {
+          initMarker(myMockData.docs[i].data(), myMockData.docs[i].id);
+        }
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    getMarkerData();
+    super.initState();
+  }
+
+//list of coordinate marker
+  Set<Marker> getMarker() {
+    return <Marker>{
+      const Marker(
+          markerId: MarkerId('Center 1'),
+          position: LatLng(36.97060924734167, -122.03334232319105),
+          icon: BitmapDescriptor.defaultMarker,
+          infoWindow: InfoWindow(title: 'idk')),
+    };
+  }
 
   @override
   Widget build(BuildContext context) {
     return Column(children: [
 //https://www.youtube.com/watch?v=sL74UNLssV8 - tutorial im following rn
       //THE ACTUAL MAP
-      const SizedBox(
+      SizedBox(
         height: 350,
         child: GoogleMap(
+          markers: Set<Marker>.of(markers.values),
           mapType: MapType.normal,
           myLocationEnabled: true,
-          initialCameraPosition:
-              CameraPosition(target: LatLng(36.9741, -122.0308)),
+          initialCameraPosition: const CameraPosition(
+            target: LatLng(36.9741, -122.0308),
+            zoom: 12.0,
+          ),
+          onMapCreated: _onMapCreated,
         ),
       ),
-      // Container(
-      //     height: 450,
-      //     decoration: BoxDecoration(
-      //       borderRadius: BorderRadius.circular(10),
-      //       color: Colors.grey,
-      //     ),
-      //     margin: const EdgeInsets.fromLTRB(20, 20, 20, 5)),
+
       Container(
           height: 330,
           decoration: BoxDecoration(
@@ -54,7 +106,46 @@ class MapsPortrait extends StatelessWidget {
           margin: const EdgeInsets.fromLTRB(20, 20, 20, 5)),
     ]);
   }
+
+//map interaction
+  _onMapCreated(GoogleMapController controller) {
+    setState(() {
+      controller = controller;
+    });
+  }
 }
+
+// class MapsPortrait extends StatelessWidget {
+//   const MapsPortrait({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(children: [
+// //https://www.youtube.com/watch?v=sL74UNLssV8 - tutorial im following rn
+//       //THE ACTUAL MAP
+//       const SizedBox(
+//         height: 350,
+//         child: GoogleMap(
+//             mapType: MapType.normal,
+//             myLocationEnabled: true,
+//             initialCameraPosition: CameraPosition(
+//               target: LatLng(36.9741, -122.0308),
+//               zoom: 12.0,
+//             )
+//             onMapCreated: _onMapCreated,
+//             ),
+//       ),
+
+//       Container(
+//           height: 330,
+//           decoration: BoxDecoration(
+//             borderRadius: BorderRadius.circular(10),
+//             color: Colors.grey,
+//           ),
+//           margin: const EdgeInsets.fromLTRB(20, 20, 20, 5)),
+//     ]);
+//   }
+//}
 
 class MapsLandscape extends StatelessWidget {
   const MapsLandscape({super.key});
