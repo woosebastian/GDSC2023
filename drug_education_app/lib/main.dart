@@ -17,8 +17,9 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(MyApp());
-  getData("substancea");
 }
+
+Map<String, Substance> substanceMap = <String, Substance>{};
 
 class MyApp extends StatelessWidget {
   final Future<FirebaseApp> _fbApp = Firebase.initializeApp();
@@ -67,6 +68,27 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       mySelectedIndex = index;
     });
+  }
+
+  //accessing all documents in Firestore and converting them into custom objects: https://github.com/firebase/snippets-flutter/blob/36812ac93095d36ebe10bed2f08793e5f7dfcb06/packages/firebase_snippets_app/lib/snippets/firestore.dart#L412-L419 and https://stackoverflow.com/questions/68079030/how-to-use-firestore-withconverter-in-flutter
+  var db = FirebaseFirestore.instance;
+  void getAllData() async {
+    final collection =
+        FirebaseFirestore.instance.collection('substances').withConverter(
+              fromFirestore: Substance.fromFirestore,
+              toFirestore: (Substance substance, _) => substance.toFirestore(),
+            );
+    collection.get().then((querySnapshot) {
+      for (var docSnapshot in querySnapshot.docs) {
+        substanceMap[docSnapshot.id] = docSnapshot.data();
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    getAllData();
+    super.initState();
   }
 
   @override
@@ -145,11 +167,12 @@ class HomePage extends StatelessWidget {
               //adding margins and images to Containers: https://docs.flutter.dev/development/ui/layout
               GestureDetector(
                 onTap: () {
-                  getData("substancea");
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const SubstancePage()),
+                        builder: (context) => const SubstancePage(
+                              substanceID: "substancea",
+                            )),
                   );
                 },
                 child: Container(
@@ -173,11 +196,12 @@ class HomePage extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  getData("substanceb");
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const SubstancePage()),
+                        builder: (context) => const SubstancePage(
+                              substanceID: "substanceb",
+                            )),
                   );
                 },
                 child: Container(
@@ -201,11 +225,12 @@ class HomePage extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  getData("substancec");
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const SubstancePage()),
+                        builder: (context) => const SubstancePage(
+                              substanceID: "substancec",
+                            )),
                   );
                 },
                 child: Container(
@@ -229,11 +254,12 @@ class HomePage extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  getData("substanced");
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const SubstancePage()),
+                        builder: (context) => const SubstancePage(
+                              substanceID: "substanced",
+                            )),
                   );
                 },
                 child: Container(
@@ -367,45 +393,27 @@ class HotlineLandscape extends StatelessWidget {
   }
 }
 
-Substance substance = Substance();
-
-//returning an object from firestore database: https://github.com/firebase/snippets-flutter/blob/36812ac93095d36ebe10bed2f08793e5f7dfcb06/packages/firebase_snippets_app/lib/snippets/firestore.dart#L412-L419
-//accessing the returned object from a future: https://meysam-mahfouzi.medium.com/understanding-future-in-dart-3c3eea5a22fb
-var db = FirebaseFirestore.instance;
-getData(id) async {
-  final ref = db.collection("substances").doc(id).withConverter(
-        fromFirestore: Substance.fromFirestore,
-        toFirestore: (Substance substance, _) => substance.toFirestore(),
-      );
-  final docSnap = await ref.get();
-  final mySubstance = docSnap.data();
-  if (mySubstance != null) {
-    substance = mySubstance;
-  }
-  // else {
-  //   throw ErrorDescription("no substance found");
-  // }
-}
-
 class SubstancePage extends StatelessWidget {
-  const SubstancePage({super.key});
-
+  //passing data between pages: https://stackoverflow.com/questions/53861302/passing-data-between-screens-in-flutter
+  final String substanceID;
+  const SubstancePage({super.key, required this.substanceID});
   @override
   Widget build(BuildContext context) {
     final deviceOrientation = MediaQuery.of(context).orientation;
-
+    Substance mySubstance = substanceMap[substanceID] as Substance;
     return Scaffold(
       body: Center(
           //changing pages depending on orientation: https://www.youtube.com/watch?v=_PR6C1kGbp8
           child: deviceOrientation == Orientation.portrait
-              ? const SubstancePagePortrait()
-              : const SubstancePageLandscape()),
+              ? SubstancePagePortrait(mySubstance: mySubstance)
+              : SubstancePageLandscape(mySubstance: mySubstance)),
     );
   }
 }
 
 class SubstancePagePortrait extends StatelessWidget {
-  const SubstancePagePortrait({super.key});
+  final Substance mySubstance;
+  const SubstancePagePortrait({super.key, required this.mySubstance});
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -418,7 +426,7 @@ class SubstancePagePortrait extends StatelessWidget {
         Align(
           alignment: Alignment.center,
           child: Text(
-            "${substance.name} Factsheet",
+            "${mySubstance.name} Factsheet",
             style: const TextStyle(
                 fontWeight: FontWeight.bold, height: 1.5, fontSize: 40),
             textAlign: TextAlign.center,
@@ -427,7 +435,7 @@ class SubstancePagePortrait extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.fromLTRB(30, 20, 30, 20),
           child: Text(
-            "Overdose Rate: ${substance.overdoseRate}",
+            "Overdose Rate: ${mySubstance.overdoseRate}",
             style: const TextStyle(
                 fontWeight: FontWeight.normal, height: 1, fontSize: 25),
             textAlign: TextAlign.left,
@@ -446,7 +454,7 @@ class SubstancePagePortrait extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(30, 0, 30, 20),
           child: Flexible(
             child: Text(
-              "${substance.description}",
+              "${mySubstance.description}",
               style: const TextStyle(
                   fontWeight: FontWeight.normal, height: 1, fontSize: 20),
               textAlign: TextAlign.left,
@@ -464,7 +472,7 @@ class SubstancePagePortrait extends StatelessWidget {
         ),
         //create widget for each element in array: https://stackoverflow.com/questions/56026705/create-widget-for-each-item-in-the-list-in-flutter-dart
         Column(
-          children: substance.symptoms!
+          children: mySubstance.symptoms!
               .map<Widget>(
                 (symptom) => Padding(
                   padding: const EdgeInsets.fromLTRB(30, 0, 30, 10),
@@ -497,7 +505,8 @@ class SubstancePagePortrait extends StatelessWidget {
 }
 
 class SubstancePageLandscape extends StatelessWidget {
-  const SubstancePageLandscape({super.key});
+  final Substance mySubstance;
+  const SubstancePageLandscape({super.key, required this.mySubstance});
 
   @override
   Widget build(BuildContext context) {
