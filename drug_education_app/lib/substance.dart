@@ -4,15 +4,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Substance {
   String? name;
-  String? overdoseRate;
   String? description;
   List<String>? symptoms;
+  List<String>? treamentOptions;
 
   Substance({
     this.name,
-    this.overdoseRate,
     this.description,
     this.symptoms,
+    this.treamentOptions,
   });
 
   factory Substance.fromFirestore(
@@ -22,19 +22,21 @@ class Substance {
     final data = snapshot.data();
     return Substance(
       name: data?['name'],
-      overdoseRate: data?['overdose rate'],
       description: data?['description'],
       symptoms:
           data?['symptoms'] is Iterable ? List.from(data?['symptoms']) : null,
+      treamentOptions: data?['treatment options'] is Iterable
+          ? List.from(data?['treatment options'])
+          : null,
     );
   }
 
   Map<String, dynamic> toFirestore() {
     return {
       if (name != null) "name": name,
-      if (overdoseRate != null) "overdose rate": overdoseRate,
       if (description != null) "description": description,
       if (symptoms != null) "symptoms": symptoms,
+      if (treamentOptions != null) "treatment options": treamentOptions,
     };
   }
 }

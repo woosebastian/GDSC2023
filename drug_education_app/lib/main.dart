@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
   //custom fonts: https://docs.flutter.dev/cookbook/design/fonts
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Drug Education App',
+        title: 'Slug Substance Safety',
         theme: ThemeData(primarySwatch: Colors.blue, fontFamily: 'RobotoSlab'),
         home: FutureBuilder(
           future: _fbApp,
@@ -70,27 +70,6 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  //accessing all documents in Firestore and converting them into custom objects: https://github.com/firebase/snippets-flutter/blob/36812ac93095d36ebe10bed2f08793e5f7dfcb06/packages/firebase_snippets_app/lib/snippets/firestore.dart#L412-L419 and https://stackoverflow.com/questions/68079030/how-to-use-firestore-withconverter-in-flutter
-  var db = FirebaseFirestore.instance;
-  void getAllData() async {
-    final collection =
-        FirebaseFirestore.instance.collection('substances').withConverter(
-              fromFirestore: Substance.fromFirestore,
-              toFirestore: (Substance substance, _) => substance.toFirestore(),
-            );
-    collection.get().then((querySnapshot) {
-      for (var docSnapshot in querySnapshot.docs) {
-        substanceMap[docSnapshot.id] = docSnapshot.data();
-      }
-    });
-  }
-
-  @override
-  void initState() {
-    getAllData();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
@@ -98,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
         //customizing AppBar: https://api.flutter.dev/flutter/material/AppBar-class.html
         appBar: AppBar(
           title: const Text(
-            "Drug Education",
+            "Slug Substance Safety",
             style: TextStyle(color: Colors.white, fontSize: 30),
           ),
           backgroundColor: const Color.fromARGB(255, 150, 173, 227),
@@ -147,31 +126,59 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  //accessing all documents in Firestore and converting them into custom objects: https://github.com/firebase/snippets-flutter/blob/36812ac93095d36ebe10bed2f08793e5f7dfcb06/packages/firebase_snippets_app/lib/snippets/firestore.dart#L412-L419 and https://stackoverflow.com/questions/68079030/how-to-use-firestore-withconverter-in-flutter
+  var db = FirebaseFirestore.instance;
+  Future<void> getAllData() async {
+    final collection =
+        FirebaseFirestore.instance.collection('substances').withConverter(
+              fromFirestore: Substance.fromFirestore,
+              toFirestore: (Substance substance, _) => substance.toFirestore(),
+            );
+    await collection.get().then((querySnapshot) {
+      for (var docSnapshot in querySnapshot.docs) {
+        substanceMap[docSnapshot.id] = docSnapshot.data();
+      }
+    });
+  }
+
+  //initState(): https://www.geeksforgeeks.org/flutter-initstate/
+  @override
+  void initState() {
+    getAllData();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      //GridView: https://www.youtube.com/watch?v=4pi7CApy4wc
-      child: OrientationBuilder(
-        builder: (context, orientation) {
-          return GridView.count(
-            //changing grid layout depending on orientation: https://docs.flutter.dev/cookbook/design/orientation
-            crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
-            mainAxisSpacing: 10,
-            crossAxisSpacing: 10,
-            children: [
+    return OrientationBuilder(
+      builder: (context, orientation) {
+        //GridView.builder: https://api.flutter.dev/flutter/widgets/GridView-class.html
+        return GridView.builder(
+            padding: const EdgeInsets.all(10.0),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              //changing grid layout depending on orientation: https://docs.flutter.dev/cookbook/design/orientation
+              crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
+            ),
+            itemCount: substanceMap.length,
+            itemBuilder: (BuildContext context, int index) {
               //clickability for GridView items: https://stackoverflow.com/questions/71249312/how-do-i-get-dart-flutter-gridview-items-to-click
               //adding margins and images to Containers: https://docs.flutter.dev/development/ui/layout
-              GestureDetector(
+              return GestureDetector(
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const SubstancePage(
-                              substanceID: "substancea",
+                        builder: (context) => SubstancePage(
+                              //accessing map keys & values: https://stackoverflow.com/questions/60512845/how-to-access-map-keys-through-index-dart
+                              substanceID: substanceMap.keys.elementAt(index),
                             )),
                   );
                 },
@@ -181,110 +188,22 @@ class HomePage extends StatelessWidget {
                     color: Colors.grey,
                   ),
                   margin: const EdgeInsets.all(4),
-                  // for adding images to each grid element
-                  // child: Image.asset('images/pic$imageIndex.jpg'),
+                  //for adding images to each grid element
+                  //child: Image.asset('images/pic$imageIndex.jpg'),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Text(
-                        "Substance A",
-                        style: TextStyle(color: Colors.white, fontSize: 30),
+                        "${substanceMap.values.elementAt(index).name}",
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 30),
                       )
                     ],
                   ),
                 ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const SubstancePage(
-                              substanceID: "substanceb",
-                            )),
-                  );
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.grey,
-                  ),
-                  margin: const EdgeInsets.all(4),
-                  // for adding images to each grid element
-                  // child: Image.asset('images/pic$imageIndex.jpg'),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Text(
-                        "Substance B",
-                        style: TextStyle(color: Colors.white, fontSize: 30),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const SubstancePage(
-                              substanceID: "substancec",
-                            )),
-                  );
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.grey,
-                  ),
-                  margin: const EdgeInsets.all(4),
-                  // for adding images to each grid element
-                  // child: Image.asset('images/pic$imageIndex.jpg'),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Text(
-                        "Substance C",
-                        style: TextStyle(color: Colors.white, fontSize: 30),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const SubstancePage(
-                              substanceID: "substanced",
-                            )),
-                  );
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.grey,
-                  ),
-                  margin: const EdgeInsets.all(4),
-                  // for adding images to each grid element
-                  // child: Image.asset('images/pic$imageIndex.jpg'),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Text(
-                        "Substance D",
-                        style: TextStyle(color: Colors.white, fontSize: 30),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          );
-        },
-      ),
+              );
+            });
+      },
     );
   }
 }
@@ -416,134 +335,258 @@ class SubstancePagePortrait extends StatelessWidget {
   const SubstancePagePortrait({super.key, required this.mySubstance});
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.max,
-      children: <Widget>[
-        const SizedBox(
-          height: 60,
-        ),
-        Align(
-          alignment: Alignment.center,
-          child: Text(
-            "${mySubstance.name} Factsheet",
-            style: const TextStyle(
-                fontWeight: FontWeight.bold, height: 1.5, fontSize: 40),
-            textAlign: TextAlign.center,
+    return Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          tooltip: "Return",
+          child: const Icon(
+            Icons.arrow_back_ios_rounded,
+            color: Colors.white,
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(30, 20, 30, 20),
-          child: Text(
-            "Overdose Rate: ${mySubstance.overdoseRate}",
-            style: const TextStyle(
-                fontWeight: FontWeight.normal, height: 1, fontSize: 25),
-            textAlign: TextAlign.left,
-          ),
-        ),
-        const Padding(
-          padding: EdgeInsets.fromLTRB(30, 20, 30, 10),
-          child: Text(
-            "Description: ",
-            style: TextStyle(
-                fontWeight: FontWeight.normal, height: 1, fontSize: 25),
-            textAlign: TextAlign.left,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(30, 0, 30, 20),
-          child: Flexible(
-            child: Text(
-              "${mySubstance.description}",
-              style: const TextStyle(
-                  fontWeight: FontWeight.normal, height: 1, fontSize: 20),
-              textAlign: TextAlign.left,
-            ),
-          ),
-        ),
-        const Padding(
-          padding: EdgeInsets.fromLTRB(30, 20, 30, 10),
-          child: Text(
-            "Symptoms:",
-            style: TextStyle(
-                fontWeight: FontWeight.normal, height: 1, fontSize: 25),
-            textAlign: TextAlign.left,
-          ),
-        ),
-        //create widget for each element in array: https://stackoverflow.com/questions/56026705/create-widget-for-each-item-in-the-list-in-flutter-dart
-        Column(
-          children: mySubstance.symptoms!
-              .map<Widget>(
-                (symptom) => Padding(
-                  padding: const EdgeInsets.fromLTRB(30, 0, 30, 10),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(30, 60, 30, 0),
+                child: Align(
+                  alignment: Alignment.center,
                   child: Text(
-                    "- $symptom",
+                    "${mySubstance.name} Factsheet",
                     style: const TextStyle(
-                        fontWeight: FontWeight.normal, height: 1, fontSize: 20),
+                        fontWeight: FontWeight.bold, height: 1, fontSize: 40),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.fromLTRB(30, 20, 30, 10),
+                child: Text(
+                  "Description: ",
+                  style: TextStyle(
+                      fontWeight: FontWeight.normal, height: 1, fontSize: 25),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(30, 0, 30, 20),
+                child: Flexible(
+                  child: Text(
+                    "${mySubstance.description}",
+                    style: const TextStyle(
+                      fontWeight: FontWeight.normal,
+                      height: 1.5,
+                      fontSize: 20,
+                    ),
                     textAlign: TextAlign.left,
                   ),
                 ),
+              ),
+              const Padding(
+                padding: EdgeInsets.fromLTRB(30, 20, 30, 10),
+                child: Text(
+                  "Symptoms:",
+                  style: TextStyle(
+                      fontWeight: FontWeight.normal, height: 1, fontSize: 25),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+              //create widget for each element in array: https://stackoverflow.com/questions/56026705/create-widget-for-each-item-in-the-list-in-flutter-dart
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: mySubstance.symptoms!
+                    .map<Widget>(
+                      (symptom) => Padding(
+                        padding: const EdgeInsets.fromLTRB(30, 0, 30, 10),
+                        child: Text(
+                          "- $symptom",
+                          style: const TextStyle(
+                              fontWeight: FontWeight.normal,
+                              height: 1.5,
+                              fontSize: 20),
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                    )
+                    .toList(),
+              ),
+              const Padding(
+                padding: EdgeInsets.fromLTRB(30, 20, 30, 10),
+                child: Text(
+                  "Treatment Options:",
+                  style: TextStyle(
+                      fontWeight: FontWeight.normal, height: 1, fontSize: 25),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+              //create widget for each element in array: https://stackoverflow.com/questions/56026705/create-widget-for-each-item-in-the-list-in-flutter-dart
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: mySubstance.treamentOptions!
+                    .map<Widget>(
+                      (treatmentOption) => Padding(
+                        padding: const EdgeInsets.fromLTRB(30, 0, 30, 10),
+                        child: Text(
+                          "- $treatmentOption",
+                          style: const TextStyle(
+                              fontWeight: FontWeight.normal,
+                              height: 1.5,
+                              fontSize: 20),
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                    )
+                    .toList(),
+              ),
+              const Padding(
+                padding: EdgeInsets.fromLTRB(30, 20, 30, 20),
+                child: Text(
+                  "Source: https://nida.nih.gov/research-topics/commonly-used-drugs-charts",
+                  style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      height: 1.5,
+                      fontSize: 15,
+                      color: Colors.grey),
+                  textAlign: TextAlign.left,
+                ),
               )
-              .toList(),
-        ),
-        Expanded(
-            child: Align(
-          alignment: Alignment.bottomCenter,
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text('Return'),
+            ],
           ),
-        )),
-        const SizedBox(
-          height: 30,
-        ),
-      ],
-    );
+        ));
   }
 }
 
 class SubstancePageLandscape extends StatelessWidget {
   final Substance mySubstance;
   const SubstancePageLandscape({super.key, required this.mySubstance});
-
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        //SizedBox: https://github.com/flutter/codelabs/blob/main/namer/step_08/lib/main.dart
-        const Padding(
-          padding: EdgeInsets.fromLTRB(60, 60, 20, 20),
-          //Text styling: https://api.flutter.dev/flutter/painting/TextStyle-class.html and https://stackoverflow.com/questions/50554110/how-do-i-center-text-vertically-and-horizontally-in-flutter
-          child: Text(
-            "Substance Abuse and Mental Health Services Administration: \n 1-800-662-HELP (4357)",
-            style: TextStyle(
-                fontWeight: FontWeight.bold, height: 1.5, fontSize: 30),
-            textAlign: TextAlign.center,
-          ),
-        ),
-        Padding(
-          //IconButton: https://www.javatpoint.com/flutter-buttons
-          //navigating to URL: https://www.youtube.com/watch?v=nf4_Ke5B1K8 and https://stackoverflow.com/questions/66473263/the-argument-type-string-cant-be-assigned-to-the-parameter-type-uri
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-          child: IconButton(
-            onPressed: () {
-              urllauncher.launchUrl(Uri.parse("tel:1-800-662-4357"));
-            },
-            icon: const Icon(Icons.phone),
-            iconSize: 40,
-            color: Colors.green,
-            tooltip: "Call SAMHSA",
-          ),
-        ),
-        ElevatedButton(
+    return Scaffold(
+        floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          child: const Text('Return'),
+          tooltip: "Return",
+          child: const Icon(
+            Icons.arrow_back_ios_rounded,
+            color: Colors.white,
+          ),
         ),
-      ],
-    );
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(70, 20, 70, 0),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    "${mySubstance.name} Factsheet",
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, height: 1, fontSize: 40),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.fromLTRB(70, 20, 70, 10),
+                child: Text(
+                  "Description: ",
+                  style: TextStyle(
+                      fontWeight: FontWeight.normal, height: 1, fontSize: 25),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(70, 0, 70, 20),
+                child: Flexible(
+                  child: Text(
+                    "${mySubstance.description}",
+                    style: const TextStyle(
+                        fontWeight: FontWeight.normal,
+                        height: 1.5,
+                        fontSize: 20),
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.fromLTRB(70, 20, 70, 10),
+                child: Text(
+                  "Symptoms:",
+                  style: TextStyle(
+                      fontWeight: FontWeight.normal, height: 1, fontSize: 25),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+              //create widget for each element in array: https://stackoverflow.com/questions/56026705/create-widget-for-each-item-in-the-list-in-flutter-dart
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: mySubstance.symptoms!
+                    .map<Widget>(
+                      (symptom) => Padding(
+                        padding: const EdgeInsets.fromLTRB(70, 0, 70, 10),
+                        child: Text(
+                          "- $symptom",
+                          style: const TextStyle(
+                              fontWeight: FontWeight.normal,
+                              height: 1.5,
+                              fontSize: 20),
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                    )
+                    .toList(),
+              ),
+              const Padding(
+                padding: EdgeInsets.fromLTRB(70, 20, 70, 10),
+                child: Text(
+                  "Treatment Options:",
+                  style: TextStyle(
+                      fontWeight: FontWeight.normal, height: 1, fontSize: 25),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+              //create widget for each element in array: https://stackoverflow.com/questions/56026705/create-widget-for-each-item-in-the-list-in-flutter-dart
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: mySubstance.treamentOptions!
+                    .map<Widget>(
+                      (treatmentOption) => Padding(
+                        padding: const EdgeInsets.fromLTRB(70, 0, 70, 10),
+                        child: Text(
+                          "- $treatmentOption",
+                          style: const TextStyle(
+                              fontWeight: FontWeight.normal,
+                              height: 1.5,
+                              fontSize: 20),
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                    )
+                    .toList(),
+              ),
+              const Padding(
+                padding: EdgeInsets.fromLTRB(70, 20, 70, 20),
+                child: Text(
+                  "Source: https://nida.nih.gov/research-topics/commonly-used-drugs-charts",
+                  style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      height: 1.5,
+                      fontSize: 15,
+                      color: Colors.grey),
+                  textAlign: TextAlign.left,
+                ),
+              )
+            ],
+          ),
+        ));
   }
 }
