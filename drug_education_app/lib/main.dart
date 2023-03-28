@@ -213,7 +213,9 @@ class _HomePageState extends State<HomePage> {
               },
             );
           } else {
-            return const CircularProgressIndicator();
+            return const Align(
+                alignment: Alignment.center,
+                child: CircularProgressIndicator());
           }
         });
   }
