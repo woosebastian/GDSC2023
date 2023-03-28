@@ -158,53 +158,64 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return OrientationBuilder(
-      builder: (context, orientation) {
-        //GridView.builder: https://api.flutter.dev/flutter/widgets/GridView-class.html
-        return GridView.builder(
-            padding: const EdgeInsets.all(10.0),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              //changing grid layout depending on orientation: https://docs.flutter.dev/cookbook/design/orientation
-              crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
-            ),
-            itemCount: substanceMap.length,
-            itemBuilder: (BuildContext context, int index) {
-              //clickability for GridView items: https://stackoverflow.com/questions/71249312/how-do-i-get-dart-flutter-gridview-items-to-click
-              //adding margins and images to Containers: https://docs.flutter.dev/development/ui/layout
-              return GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => SubstancePage(
-                              //accessing map keys & values: https://stackoverflow.com/questions/60512845/how-to-access-map-keys-through-index-dart
-                              substanceID: substanceMap.keys.elementAt(index),
-                            )),
-                  );
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.grey,
-                  ),
-                  margin: const EdgeInsets.all(4),
-                  //for adding images to each grid element
-                  //child: Image.asset('images/pic$imageIndex.jpg'),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "${substanceMap.values.elementAt(index).name}",
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 30),
-                      )
-                    ],
-                  ),
-                ),
-              );
-            });
-      },
-    );
+    //FutureBuilder: https://api.flutter.dev/flutter/widgets/FutureBuilder-class.html
+    return FutureBuilder(
+        future: getAllData(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return OrientationBuilder(
+              builder: (context, orientation) {
+                //GridView.builder: https://api.flutter.dev/flutter/widgets/GridView-class.html
+                return GridView.builder(
+                    padding: const EdgeInsets.all(10.0),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      //changing grid layout depending on orientation: https://docs.flutter.dev/cookbook/design/orientation
+                      crossAxisCount:
+                          orientation == Orientation.portrait ? 2 : 3,
+                    ),
+                    itemCount: substanceMap.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      //clickability for GridView items: https://stackoverflow.com/questions/71249312/how-do-i-get-dart-flutter-gridview-items-to-click
+                      //adding margins and images to Containers: https://docs.flutter.dev/development/ui/layout
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SubstancePage(
+                                      //accessing map keys & values: https://stackoverflow.com/questions/60512845/how-to-access-map-keys-through-index-dart
+                                      substanceID:
+                                          substanceMap.keys.elementAt(index),
+                                    )),
+                          );
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.grey,
+                          ),
+                          margin: const EdgeInsets.all(4),
+                          //for adding images to each grid element
+                          //child: Image.asset('images/pic$imageIndex.jpg'),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "${substanceMap.values.elementAt(index).name}",
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 30),
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    });
+              },
+            );
+          } else {
+            return const CircularProgressIndicator();
+          }
+        });
   }
 }
 
