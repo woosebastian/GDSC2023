@@ -1,4 +1,4 @@
-// creating object files for use with firestore: https://www.youtube.com/watch?v=R015EukCnYI&t=1018s
+// creating object files for use with firestore: https://www.youtube.com/watch?v=R015EukCnYI&t=1018s and https://firebase.google.com/docs/firestore/query-data/get-data
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 

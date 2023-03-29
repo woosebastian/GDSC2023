@@ -152,7 +152,6 @@ class _HomePageState extends State<HomePage> {
   //initState(): https://www.geeksforgeeks.org/flutter-initstate/
   @override
   void initState() {
-    getAllData();
     super.initState();
   }
 
@@ -387,8 +386,8 @@ class SubstancePagePortrait extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(30, 0, 30, 20),
-                child: Flexible(
+                padding: const EdgeInsets.fromLTRB(30, 0, 30, 10),
+                child: SizedBox(
                   child: Text(
                     "${mySubstance.description}",
                     style: const TextStyle(
@@ -518,8 +517,8 @@ class SubstancePageLandscape extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(70, 0, 70, 20),
-                child: Flexible(
+                padding: const EdgeInsets.fromLTRB(70, 0, 70, 10),
+                child: SizedBox(
                   child: Text(
                     "${mySubstance.description}",
                     style: const TextStyle(
