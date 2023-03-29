@@ -440,7 +440,7 @@ class SubstancePagePortrait extends StatelessWidget {
               //create widget for each element in array: https://stackoverflow.com/questions/56026705/create-widget-for-each-item-in-the-list-in-flutter-dart
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: mySubstance.treamentOptions!
+                children: mySubstance.treatmentOptions!
                     .map<Widget>(
                       (treatmentOption) => Padding(
                         padding: const EdgeInsets.fromLTRB(30, 0, 30, 10),
@@ -570,7 +570,7 @@ class SubstancePageLandscape extends StatelessWidget {
               //create widget for each element in array: https://stackoverflow.com/questions/56026705/create-widget-for-each-item-in-the-list-in-flutter-dart
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: mySubstance.treamentOptions!
+                children: mySubstance.treatmentOptions!
                     .map<Widget>(
                       (treatmentOption) => Padding(
                         padding: const EdgeInsets.fromLTRB(70, 0, 70, 10),

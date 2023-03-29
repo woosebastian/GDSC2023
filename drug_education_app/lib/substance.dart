@@ -6,13 +6,13 @@ class Substance {
   String? name;
   String? description;
   List<String>? symptoms;
-  List<String>? treamentOptions;
+  List<String>? treatmentOptions;
 
   Substance({
     this.name,
     this.description,
     this.symptoms,
-    this.treamentOptions,
+    this.treatmentOptions,
   });
 
   factory Substance.fromFirestore(
@@ -25,7 +25,7 @@ class Substance {
       description: data?['description'],
       symptoms:
           data?['symptoms'] is Iterable ? List.from(data?['symptoms']) : null,
-      treamentOptions: data?['treatment options'] is Iterable
+      treatmentOptions: data?['treatment options'] is Iterable
           ? List.from(data?['treatment options'])
           : null,
     );
@@ -36,7 +36,7 @@ class Substance {
       if (name != null) "name": name,
       if (description != null) "description": description,
       if (symptoms != null) "symptoms": symptoms,
-      if (treamentOptions != null) "treatment options": treamentOptions,
+      if (treatmentOptions != null) "treatment options": treatmentOptions,
     };
   }
 }

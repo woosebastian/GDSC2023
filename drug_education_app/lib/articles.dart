@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'article.dart';
+import 'package:url_launcher/url_launcher.dart' as urllauncher;
+
+Map<String, Article> articleMap = <String, Article>{};
 
 class Articles extends StatefulWidget {
   const Articles({super.key});
@@ -8,24 +13,54 @@ class Articles extends StatefulWidget {
 }
 
 class _ArticlesState extends State<Articles> {
+  var db = FirebaseFirestore.instance;
+  Future<void> getAllData() async {
+    final collection =
+        FirebaseFirestore.instance.collection('articles').withConverter(
+              fromFirestore: Article.fromFirestore,
+              toFirestore: (Article article, _) => article.toFirestore(),
+            );
+    await collection.get().then((querySnapshot) {
+      for (var docSnapshot in querySnapshot.docs) {
+        articleMap[docSnapshot.id] = docSnapshot.data();
+      }
+    });
+  }
+
+  //initState(): https://www.geeksforgeeks.org/flutter-initstate/
+  @override
+  void initState() {
+    getAllData();
+    super.initState();
+  }
+
   //Orientation Builder: https://medium.flutterdevs.com/screen-orientation-in-flutter-96526f2c1e7f
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: OrientationBuilder(builder: (context, orientation) {
-      if (orientation == Orientation.portrait) {
-        return const MyCustomForm();
-      } else {
-        return const LandscapeArticlesPage();
-      }
-    })
-        // body: MyCustomForm(),
-        );
+    return FutureBuilder(
+      future: getAllData(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return Scaffold(
+              body: OrientationBuilder(builder: (context, orientation) {
+            if (orientation == Orientation.portrait) {
+              return const ArticlesPagePortrait();
+            } else {
+              return const ArticlesPageLandscape();
+            }
+          }));
+        } else {
+          return const Align(
+              alignment: Alignment.center, child: CircularProgressIndicator());
+        }
+      },
+    );
   }
 }
 
 //search bar + rest of the home page
-class MyCustomForm extends StatelessWidget {
-  const MyCustomForm({super.key});
+class ArticlesPagePortrait extends StatelessWidget {
+  const ArticlesPagePortrait({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -120,49 +155,104 @@ class MyCustomForm extends StatelessWidget {
   }
 }
 
-class LandscapeArticlesPage extends StatelessWidget {
-  const LandscapeArticlesPage({super.key});
+class ArticlesPageLandscape extends StatelessWidget {
+  const ArticlesPageLandscape({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-            width: 300,
-            height: 800,
-            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 25),
-            decoration: BoxDecoration(color: Colors.white, boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 1,
-                blurRadius: 2,
-                offset: const Offset(1, 1),
-              ),
-            ]),
-            child: Container(
-                width: 300,
-                padding: const EdgeInsets.only(
-                  left: 20,
-                  top: 10,
-                  bottom: 5,
-                  right: 20,
+    // return Padding(
+    // padding: const EdgeInsets.fromLTRB(70, 20, 70, 15),
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      const Padding(
+        padding: EdgeInsets.fromLTRB(58, 20, 58, 5),
+        child: TextField(
+          cursorColor: Color.fromARGB(255, 150, 173, 227),
+          decoration: InputDecoration(
+              enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: Color.fromARGB(255, 174, 221, 227), width: 2)),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: Color.fromARGB(255, 150, 173, 227), width: 3)),
+              border: OutlineInputBorder(),
+              hintText: 'Enter a search term'),
+        ),
+      ),
+      const SizedBox(height: 15),
+      SizedBox(
+          height: 180,
+          //ListView: https://api.flutter.dev/flutter/widgets/ListView-class.html
+          child: ListView.separated(
+            itemCount: articleMap.length,
+            separatorBuilder: (_, __) => const Divider(
+              indent: 30,
+            ),
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (BuildContext context, int index) {
+              return GestureDetector(
+                onTap: () {
+                  urllauncher.launchUrl(
+                      Uri.parse("${articleMap.values.elementAt(index).url}"));
+                },
+                child: Container(
+                  width: 400,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 1,
+                          blurRadius: 2,
+                          offset: const Offset(3, 3),
+                        )
+                      ]),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 20,
+                          top: 10,
+                          bottom: 5,
+                        ),
+                        child: Text(
+                          '${articleMap.values.elementAt(index).name}',
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 20,
+                          bottom: 5,
+                        ),
+                        child: Text(
+                            '${articleMap.values.elementAt(index).author}, ${articleMap.values.elementAt(index).publisher} - ${articleMap.values.elementAt(index).date}'),
+                      ),
+                      Flexible(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            left: 20,
+                            bottom: 15,
+                          ),
+                          child: SingleChildScrollView(
+                              child: Text(
+                            '${articleMap.values.elementAt(index).url}',
+                            style: const TextStyle(color: Colors.grey),
+                          )),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-                child: const TextField(
-                  cursorColor: Color.fromARGB(255, 150, 173, 227),
-                  decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Color.fromARGB(255, 174, 221, 227),
-                              width: 2)),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Color.fromARGB(255, 150, 173, 227),
-                              width: 3)),
-                      border: OutlineInputBorder(),
-                      hintText: 'Enter a search term'),
-                )))
-      ],
-    );
+              );
+            },
+          )),
+    ]
+        // ),
+        );
   }
 }
