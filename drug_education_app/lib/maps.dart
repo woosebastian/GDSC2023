@@ -1,3 +1,7 @@
+// ignore_for_file: non_constant_identifier_names, sort_child_properties_last, avoid_unnecessary_containers
+
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -31,8 +35,12 @@ class MapsPortrait extends StatefulWidget {
 
 class _MapsPortraitState extends State<MapsPortrait> {
   var coords = [];
+  var selectedMarker_Address = "";
+  var selectedMarker_Name = "";
+  var selectedMarker_Subtitle = "";
+  List<dynamic> selectedMarker_Services = <dynamic>[];
 
-  Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
+  Map<MarkerId, Marker> markers = <MarkerId, Marker>{}; //map of all markers
 
   void initMarker(specify, specifyId) async {
     var markerIdVal = specifyId;
@@ -41,7 +49,16 @@ class _MapsPortraitState extends State<MapsPortrait> {
         markerId: markerId,
         position:
             LatLng(specify['Location'].latitude, specify['Location'].longitude),
-        infoWindow: InfoWindow(title: specify['Name']));
+        infoWindow: InfoWindow(title: specify['Name']),
+        onTap: () {
+          setState(() {
+            //For updating info box
+            selectedMarker_Address = specify["Address"];
+            selectedMarker_Name = specify["Name"];
+            selectedMarker_Subtitle = specify["Subtitle"];
+            selectedMarker_Services = specify["Services"];
+          });
+        });
     setState(() {
       markers[markerId] = marker;
     });
@@ -56,6 +73,7 @@ class _MapsPortraitState extends State<MapsPortrait> {
       if (myMockData.docs.isNotEmpty) {
         for (int i = 0; i < myMockData.docs.length; i++) {
           initMarker(myMockData.docs[i].data(), myMockData.docs[i].id);
+          //go through every location and create marker
         }
       }
     });
@@ -67,21 +85,12 @@ class _MapsPortraitState extends State<MapsPortrait> {
     super.initState();
   }
 
-//list of coordinate marker
-  Set<Marker> getMarker() {
-    return <Marker>{
-      const Marker(
-          markerId: MarkerId('Center 1'),
-          position: LatLng(36.97060924734167, -122.03334232319105),
-          icon: BitmapDescriptor.defaultMarker,
-          infoWindow: InfoWindow(title: 'idk')),
-    };
-  }
-
+//main layout ===============================================================
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-//https://www.youtube.com/watch?v=sL74UNLssV8 - tutorial im following rn
+//https://www.youtube.com/watch?v=ctOcXmUZOZo - tutorial im following rn
+
       //THE ACTUAL MAP
       SizedBox(
         height: 350,
@@ -97,13 +106,13 @@ class _MapsPortraitState extends State<MapsPortrait> {
         ),
       ),
 
-      Container(
-          height: 330,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Colors.grey,
-          ),
-          margin: const EdgeInsets.fromLTRB(20, 20, 20, 5)),
+      //Info underneath map
+      buildInfoCard(
+          selectedMarker_Address,
+          selectedMarker_Name,
+          selectedMarker_Subtitle,
+          buildServicesSection(selectedMarker_Services)),
+      Container()
     ]);
   }
 
@@ -115,37 +124,103 @@ class _MapsPortraitState extends State<MapsPortrait> {
   }
 }
 
-// class MapsPortrait extends StatelessWidget {
-//   const MapsPortrait({super.key});
+//subwidget with services included==================================================
+Widget buildServicesSection(List<dynamic> servicesList) {
+  return Container(
+      decoration: BoxDecoration(
+          border: Border.all(color: Colors.black),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 1,
+              blurRadius: 2,
+              offset: const Offset(3, 3),
+            )
+          ]),
+      child: Column(
+        children: const [
+          SizedBox(
+            width: double.infinity,
+            height: 200,
+            child: Text(
+              'Services',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          )
+        ],
+      ));
+}
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(children: [
-// //https://www.youtube.com/watch?v=sL74UNLssV8 - tutorial im following rn
-//       //THE ACTUAL MAP
-//       const SizedBox(
-//         height: 350,
-//         child: GoogleMap(
-//             mapType: MapType.normal,
-//             myLocationEnabled: true,
-//             initialCameraPosition: CameraPosition(
-//               target: LatLng(36.9741, -122.0308),
-//               zoom: 12.0,
-//             )
-//             onMapCreated: _onMapCreated,
-//             ),
-//       ),
+//build card with all the info====================================================
 
-//       Container(
-//           height: 330,
-//           decoration: BoxDecoration(
-//             borderRadius: BorderRadius.circular(10),
-//             color: Colors.grey,
-//           ),
-//           margin: const EdgeInsets.fromLTRB(20, 20, 20, 5)),
-//     ]);
-//   }
-//}
+Widget buildInfoCard(
+    String address, String name, String subtitle, Widget services) {
+  return Container(
+    height: 330,
+    margin: const EdgeInsets.fromLTRB(20, 30, 20, 5),
+    child: Column(
+      children: [
+        Container(
+          child: Text(
+            //Title
+            name,
+            style: const TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              height: 1,
+            ),
+            textAlign: TextAlign.end,
+          ),
+          alignment: Alignment.centerLeft,
+          width: double.infinity,
+        ),
+        const SizedBox(
+          //Padding
+          height: 10,
+        ),
+        Container(
+          child: Text(
+            subtitle,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.end,
+          ),
+          alignment: Alignment.centerLeft,
+          width: double.infinity,
+        ),
+        const SizedBox(
+          //Padding
+          height: 20,
+        ),
+        Container(
+          child: Text(
+            address,
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.normal,
+            ),
+            textAlign: TextAlign.end,
+          ),
+          alignment: Alignment.centerLeft,
+          width: double.infinity,
+        ),
+        const SizedBox(
+          //Padding
+          height: 20,
+        ),
+        services,
+      ],
+    ),
+  );
+}
+
+//Landscape View ==================================================================
 
 class MapsLandscape extends StatelessWidget {
   const MapsLandscape({super.key});
@@ -170,40 +245,3 @@ class MapsLandscape extends StatelessWidget {
     ]);
   }
 }
-
-
-//IGNORE EVERYTHING BELOW THIS LINE BUT PLS DONT DELETE YET TY <3 ===========================================
-//The actual map itself - TEMPORARY, WILL REMOVE LATER, TRYING SOMETHING NEW RN, DW ABOUT IT
-//TUTORIAL: https://codelabs.developers.google.com/codelabs/google-maps-in-flutter#3
-// class MapSample extends StatefulWidget {
-//   const MapSample({super.key});
-
-//   @override
-//   State<MapSample> createState() => _MapSampleState();
-// }
-
-// class _MapSampleState extends State<MapSample> {
-//   late GoogleMapController mapController;
-
-//   final LatLng _center = const LatLng(45.52, 122.677433);
-//   void _onMapCreated(GoogleMapController controller) {
-//     mapController = controller;
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//         theme: ThemeData(
-//           useMaterial3: true,
-//           colorSchemeSeed: Colors.green[700],
-//         ),
-//         home: Scaffold(
-//             body: GoogleMap(
-//           onMapCreated: _onMapCreated,
-//           initialCameraPosition: CameraPosition(
-//             target: _center,
-//             zoom: 11.0,
-//           ),
-//         )));
-//   }
-// }
