@@ -60,7 +60,7 @@ class _ArticlesState extends State<Articles> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      //using FutureBuilder with setState(): https://stackoverflow.com/questions/52021205/usage-of-futurebuilder-with-setstate
+        //using FutureBuilder with setState(): https://stackoverflow.com/questions/52021205/usage-of-futurebuilder-with-setstate
         future: articleList,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
@@ -126,33 +126,41 @@ class _ArticlesState extends State<Articles> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                              left: 20,
-                                              top: 10,
-                                              bottom: 5,
-                                            ),
-                                            child: Text(
-                                              '${foundArticles[index].name}',
-                                              style: const TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.bold,
+                                          Flexible(
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                left: 20,
+                                                top: 10,
+                                                bottom: 5,
+                                                right: 20,
+                                              ),
+                                              child: SingleChildScrollView(
+                                                child: Text(
+                                                  '${foundArticles[index].name}',
+                                                  style: const TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                           ),
                                           Padding(
                                             padding: const EdgeInsets.only(
                                               left: 20,
+                                              right: 20,
                                               bottom: 5,
                                             ),
                                             child: Text(
                                                 '${foundArticles[index].author}, ${foundArticles[index].publisher} - ${foundArticles[index].date}'),
                                           ),
-                                          Flexible(
+                                          SizedBox(
+                                            height: 50,
                                             child: Padding(
                                               padding: const EdgeInsets.only(
                                                 left: 20,
-                                                bottom: 15,
+                                                right: 20,
+                                                bottom: 10,
                                               ),
                                               child: SingleChildScrollView(
                                                   child: Text(
@@ -232,33 +240,41 @@ class _ArticlesState extends State<Articles> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                              left: 20,
-                                              top: 10,
-                                              bottom: 5,
-                                            ),
-                                            child: Text(
-                                              '${foundArticles[index].name}',
-                                              style: const TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.bold,
+                                          Flexible(
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                left: 20,
+                                                top: 10,
+                                                bottom: 5,
+                                                right: 20,
+                                              ),
+                                              child: SingleChildScrollView(
+                                                child: Text(
+                                                  '${foundArticles[index].name}',
+                                                  style: const TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                           ),
                                           Padding(
                                             padding: const EdgeInsets.only(
                                               left: 20,
+                                              right: 20,
                                               bottom: 5,
                                             ),
                                             child: Text(
                                                 '${foundArticles[index].author}, ${foundArticles[index].publisher} - ${foundArticles[index].date}'),
                                           ),
-                                          Flexible(
+                                          SizedBox(
+                                            height: 50,
                                             child: Padding(
                                               padding: const EdgeInsets.only(
                                                 left: 20,
-                                                bottom: 15,
+                                                right: 20,
+                                                bottom: 10,
                                               ),
                                               child: SingleChildScrollView(
                                                   child: Text(
