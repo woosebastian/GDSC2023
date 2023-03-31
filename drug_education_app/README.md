@@ -1,16 +1,8 @@
 # drug_education_app
 
-A new Flutter project.
+Steps to run:
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. Clone the repository
+2. Open the local repository
+3. Navigate to lib -> main.dart
+4. Run on ios simulator (for VSCode: select "ios simulator" as the "Device" in the bottom right, then select "Run" in the menu and "Start Debugging")
